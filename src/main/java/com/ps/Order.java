@@ -7,15 +7,14 @@ public class Order {
     private String date;
     private String customerName;
     private String serverName;
-    private String orderId;
 
     private ArrayList<Products> products;
 
-    public Order(String date, String customerName, String serverName, String orderId, ArrayList<Products> products) {
+    public Order(String date, String customerName, String serverName, ArrayList<Products> products) {
         this.date = date;
         this.customerName = customerName;
         this.serverName = serverName;
-        this.orderId = orderId;
+
         this.products =  new ArrayList<>();
     }
 
@@ -43,20 +42,12 @@ public class Order {
         this.serverName = serverName;
     }
 
-    public String getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
-    }
-
-    public ArrayList<Products> getProduts() {
+    public ArrayList<Products> getProducts() {
         return products;
     }
 
-    public void setProduts(ArrayList<Products> produts) {
-        this.products = produts;
+    public void setProducts(ArrayList<Products> products) {
+        this.products = products;
     }
 
    public void addProduct(Products products){

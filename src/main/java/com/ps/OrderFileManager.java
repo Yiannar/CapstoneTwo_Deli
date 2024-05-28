@@ -6,25 +6,24 @@ import java.io.IOException;
 
 public class OrderFileManager {
 
-    public static Order getOrder(Order order){
-        try{
-            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("OrderFileWriter.csv"));
+    public static boolean saveOrder(Order order) {
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("OrderFileWriter.csv"))) {
 
             bufferedWriter.write(String.format("%s|%s|%s\n",
                     order.getDate(),
                     order.getCustomerName(),
-                   order.getProduts(),
-                   order.getServerName()
-                    ));
+                    order.getServerName()
+            ));
 
-            for (Products products : order.getProduts()){
-                bufferedWriter.write(String.format("%s|%s",
-                       products.getPrice()));
+            for (Products product : order.getProducts()) {
+                bufferedWriter.write(String.format("%f|", product.getPrice()));
             }
-            bufferedWriter.close();
-        } catch (IOException e){
-            e.printStackTrace();
-        }
+            bufferedWriter.newLine(); // Move to the next line after writing all product prices
+            return true; // Return true to indicate success
 
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false; // Return false to indicate failure
+        }
     }
 }
