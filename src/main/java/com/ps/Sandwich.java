@@ -2,7 +2,7 @@ package com.ps;
 
 import java.util.Arrays;
 
-public class Sandwich {
+public class Sandwich extends Products{
 
     private int size;
     private String[] breadType;
@@ -32,6 +32,8 @@ public class Sandwich {
         this.sauces = new String[]{"mayo", "mustard", "ketchup", "ranch", "thousand islands", "vinaigrette"};
         this.sides = new String[]{"au jus", "sauce"};
     }
+
+
 
     public int getSize() {
         return size;
@@ -87,6 +89,16 @@ public class Sandwich {
 
     public void setSides(String[] sides) {
         this.sides = sides;
+    }
+
+
+    public Sandwich(float price) {
+        this.setPrice(price);
+    }
+
+    @Override
+    public void calcPrice() {
+
     }
 
     @Override

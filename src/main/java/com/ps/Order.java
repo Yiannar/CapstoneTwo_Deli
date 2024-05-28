@@ -10,7 +10,11 @@ public class Order {
 
     private ArrayList<Products> products;
 
-    public Order(String date, String customerName, String serverName, ArrayList<Products> products) {
+    private static float fourInchPrice = 5.50f;
+    private static float eightInchPrice = 7.00f;
+    private static float tweleveInchPrice = 8.50f;
+
+    public Order(String date, String customerName, String serverName) {
         this.date = date;
         this.customerName = customerName;
         this.serverName = serverName;
@@ -59,20 +63,46 @@ public class Order {
         this.products.remove(products);
     }
 
-
-//    calcTotal();
-
-    public void calcTotal(Products products){
-//        ArrayList<Products> totalArr = new ArrayList<>();
-//
-//        for (Products product: this.produts){
-//            if (product.calcPrice()){
-//                ;
-//            }
-//        }
+    public void addFourInchSize(float v){
+        Products sandwich = new Sandwich(fourInchPrice);
+        this.products.add(sandwich);
     }
 
-//    checkOut();
+    public void addEightInchSize(float v){
+        Products sandwich = new Sandwich(eightInchPrice);
+        this.products.add(sandwich);
+    }
+
+    public void addTwelveInchSandwich(float v){
+        Products sandwich = new Sandwich(tweleveInchPrice);
+        this.products.add(sandwich);
+    }
+
+
+
+
+
+    public float calcTotal() {
+        float total = 0;
+        for (Products product : this.products) {
+            total += product.getPrice();
+        }
+        return total;
+    }
+
+    // checkout
+
+
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "date='" + date + '\'' +
+                ", customerName='" + customerName + '\'' +
+                ", serverName='" + serverName + '\'' +
+                ", products=" + products +
+                '}';
+    }
 
 
 

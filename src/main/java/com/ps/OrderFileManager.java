@@ -6,7 +6,7 @@ import java.io.IOException;
 
 public class OrderFileManager {
 
-    public static boolean saveOrder(Order order) {
+    public static void saveOrder(Order order) {
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("OrderFileWriter.csv"))) {
 
             bufferedWriter.write(String.format("%s|%s|%s\n",
@@ -18,12 +18,12 @@ public class OrderFileManager {
             for (Products product : order.getProducts()) {
                 bufferedWriter.write(String.format("%f|", product.getPrice()));
             }
-            bufferedWriter.newLine(); // Move to the next line after writing all product prices
-            return true; // Return true to indicate success
+            bufferedWriter.newLine();
+
 
         } catch (IOException e) {
             e.printStackTrace();
-            return false; // Return false to indicate failure
+
         }
     }
 }
