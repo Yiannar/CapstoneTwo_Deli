@@ -90,8 +90,6 @@ public class Order {
         return total;
     }
 
-    // checkout
-
 
 
     @Override

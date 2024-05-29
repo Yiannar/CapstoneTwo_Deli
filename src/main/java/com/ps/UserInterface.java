@@ -1,5 +1,7 @@
 package com.ps;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -35,6 +37,20 @@ public class UserInterface {
             switch (mainMenuCommand) {
 
                 case 1:
+
+
+                    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd-hhmmss");
+                    String date = LocalDateTime.now().format(dateTimeFormatter);
+
+                    scanner.nextLine();
+                    System.out.println("What is the customers name?");
+                    scanner.nextLine();
+
+                    System.out.println("Server: ");
+                    scanner.nextLine();
+
+                    order = new Order(date, order.getCustomerName(), order.getServerName());
+
                     handleNewOrder();
 
                     break;
@@ -56,8 +72,10 @@ public class UserInterface {
     }
 
     private void init() {
-//        order = OrderFileManager.saveOrder();
         order = new Order("2024-05-24", "Dan", "Kelly");
+
+        OrderFileManager.saveOrder(order);
+
     }
 
     private void handleNewOrder() {

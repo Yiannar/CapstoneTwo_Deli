@@ -7,7 +7,7 @@ import java.io.IOException;
 public class OrderFileManager {
 
     public static void saveOrder(Order order) {
-        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("OrderFileWriter.csv"))) {
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("OrderFileWriter.csv", true))) {
 
             bufferedWriter.write(String.format("%s|%s|%s\n",
                     order.getDate(),
