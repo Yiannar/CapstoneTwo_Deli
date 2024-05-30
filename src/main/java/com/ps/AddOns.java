@@ -1,30 +1,26 @@
 package com.ps;
 
-public class AddOns {
-    private String name;
-    private Float price;
+public class AddOns extends Products {
+    private float price;
     private String type;
 
-    public AddOns(String name, Float price, String type) {
-        this.name = name;
+    public AddOns(float price, String type) {
+        super(price, type);
         this.price = price;
         this.type = type;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Float getPrice() {
+    public float getPrice() {
         return price;
     }
 
-    public void setPrice(Float price) {
+    public void setPrice(float price) {
         this.price = price;
+    }
+
+    @Override
+    public void calcPrice() {
+
     }
 
     public String getType() {
@@ -38,8 +34,7 @@ public class AddOns {
     @Override
     public String toString() {
         return "AddOns{" +
-                "name='" + name + '\'' +
-                ", price=" + price +
+                "price=" + price +
                 ", type='" + type + '\'' +
                 '}';
     }

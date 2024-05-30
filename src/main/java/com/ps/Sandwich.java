@@ -1,5 +1,6 @@
 package com.ps;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Sandwich extends Products {
@@ -15,6 +16,9 @@ public class Sandwich extends Products {
     private boolean extraCheese;
     private boolean toasted;
 
+    private ArrayList<Float> price = new ArrayList<>();
+
+
     // Constructor with all parameters
     public Sandwich(String size, String[] breadType, String[] meatType, String[] cheeseType, String[] regularToppings, String[] sauces, String[] sides, float price) {
         super(price, "Sandwich");
@@ -25,6 +29,7 @@ public class Sandwich extends Products {
         this.regularToppings = regularToppings;
         this.sauces = sauces;
         this.sides = sides;
+        this.price = new ArrayList<>();
     }
 
     // Default constructor
@@ -46,6 +51,7 @@ public class Sandwich extends Products {
     public Sandwich(String[] size, String[] breadType, String[] meatType, String[] cheeseType, String[] regularToppings, String[] sauces, String[] sides) {
         super(0, "Sandwich");
     }
+
 
     public String getSize() {
         return size;
@@ -131,20 +137,21 @@ public class Sandwich extends Products {
     public void calcPrice() {
         // Add logic here to calculate the price of the sandwich
     }
-
     @Override
     public String toString() {
-        return "Sandwich{" +
-                "size=" + size +
-                ", breadType=" + Arrays.toString(breadType) +
-                ", meatType=" + Arrays.toString(meatType) +
-                ", cheeseType=" + Arrays.toString(cheeseType) +
-                ", regularToppings=" + Arrays.toString(regularToppings) +
-                ", sauces=" + Arrays.toString(sauces) +
-                ", sides=" + Arrays.toString(sides) +
-                ", extraMeat=" + extraMeat +
-                ", extraCheese=" + extraCheese +
-                ", toasted=" + toasted +
-                '}';
+        StringBuilder format = new StringBuilder();
+        format.append("Size: ").append(size).append("\n");
+        format.append("Bread type: ").append(Arrays.toString(breadType)).append("\n");
+        format.append("Meat type: ").append(Arrays.toString(meatType)).append("\n");
+        format.append("Cheese type: ").append(Arrays.toString(cheeseType)).append("\n");
+        format.append("Regular toppings: ").append(Arrays.toString(regularToppings)).append("\n");
+        format.append("Sauces: ").append(Arrays.toString(sauces)).append("\n");
+        format.append("Sides: ").append(Arrays.toString(sides)).append("\n");
+        format.append("Extra meat: ").append(extraMeat).append("\n");
+        format.append("Extra cheese: ").append(extraCheese).append("\n");
+        format.append("Toasted: ").append(toasted).append("\n");
+        format.append("Price: ").append(price).append("\n");
+        return format.toString();
     }
+
 }

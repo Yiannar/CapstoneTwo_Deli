@@ -15,9 +15,18 @@ public class UserInterface {
     private static String[] cheeseToppings = {"American", "Provolone", "Cheddar", "Swiss"};
     private static String[] regularToppings = {"Lettuce", "Peppers", "Onions", "Tomatoes", "Jalapenos", "Cucumbers", "Pickles", "Guacamole", "Mushrooms"};
     private static String[] sauces = {"Mayo", "Mustard", "Ketchup", "Ranch", "Thousand Islands", "Vinaigrette"};
-    private static String[] sides = {"Au Jus", "Sauce", "No Side"};
+    private static String[] sides = {"Au Jus", "Sauce", "No Side"};;
 
-    private static float[] sizePrices = {5.50f, 7.00f, 8.50f};
+
+private static float[] sizePrices = {5.50f, 7.00f, 8.50f};
+private static float[] meatPrices = {1.00f, 2.00f, 3.00f };
+private static float[] extraMeatPrices = {0.50f, 1.00f, 1.50f};
+private static float[] cheesePrices = {0.75f, 1.50f, 2.25f};
+private static float[] extraCheesePrices = {0.30f, 0.60f, 0.90f};
+private static String[] drinkSizes = {"Small", "Medium", "Large"};
+private static float[] drinkPrices = {2.00f, 2.50f, 3.00f};
+private static float chipsPrice = 1.50f;
+
 
     public void display() {
         int mainMenuCommand;
@@ -98,15 +107,14 @@ public class UserInterface {
             }
         } while (command != 4 && command != 0);
     }
-
     private void addSandwich() {
         int command;
 
         // Select size
         command = selectOption("What size would you like?", sizes);
         if (command == -1) return;
-        String size = sizes[command - 1];
-        float price = sizePrices[command - 1];
+        int sizeIndex = command; // Store the selected size index
+        float sizePrice = sizePrices[sizeIndex - 1]; // Get the base price based on the selected size
 
         // Select bread
         command = selectOption("Select your bread", breadTypes);
@@ -118,25 +126,50 @@ public class UserInterface {
         if (command == -1) return;
         String meatType = meatToppings[command - 1];
 
+        // Calculate meat price based on the selected size
+        float meatPrice = meatPrices[sizeIndex - 1]; // Get the base price for the selected size
+
+        // Debug prints
+        System.out.println("Size price: " + sizePrice);
+        System.out.println("Meat price: " + meatPrice);
+
+        // Calculate total sandwich price
+        float totalPrice = sizePrice;
+
+        // Debug print
+        System.out.println("Total price before adding toppings: " + totalPrice);
+
+        // Update the existing totalPrice variable with the additional meat price
+        totalPrice += meatPrice;
+
+        // Display total price
+        System.out.println("Total price: $" + totalPrice);
+
         // Extra meat
         boolean extraMeat = false;
         command = selectOption("Would you like extra meat for an additional cost?", new String[]{"Yes", "No"});
-        if (command == 1) extraMeat = true;
+        if (command == 1) {
+            extraMeat = true;
+            meatPrice += extraMeatPrices[sizeIndex - 1]; // Add extra meat price if selected
+        }
 
         // Select cheese toppings
         command = selectOption("What cheese toppings would you like to add?", cheeseToppings);
         if (command == -1) return;
         String cheeseType = cheeseToppings[command - 1];
+        float cheesePrice = cheesePrices[sizeIndex - 1]; // Get the price based on the selected cheese type
 
         // Extra cheese
         boolean extraCheese = false;
         command = selectOption("Would you like extra cheese for an additional cost?", new String[]{"Yes", "No"});
-        if (command == 1) extraCheese = true;
+        if (command == 1) {
+            extraCheese = true;
+            // Add extra cheese price if selected
+            cheesePrice += extraCheesePrices[sizeIndex - 1]; // Adjust the total price
+        }
 
-        // Regular toppings
-        command = selectOption("We also have regular toppings which are included. Would you like to add anything?", regularToppings);
-        if (command == -1) return;
-        String regularTopping = regularToppings[command - 1];
+        // Update the total price with the cheese price
+        totalPrice += cheesePrice;
 
         // Select sauce
         command = selectOption("What sauce would you like on your sandwich?", sauces);
@@ -154,8 +187,8 @@ public class UserInterface {
         if (command == 1) toasted = true;
 
         // Create sandwich and add to order
-        Sandwich sandwich = new Sandwich(size, new String[]{breadType}, new String[]{meatType}, new String[]{cheeseType},
-                new String[]{regularTopping}, new String[]{sauce}, new String[]{side}, price);
+        Sandwich sandwich = new Sandwich(sizes[sizeIndex - 1], new String[]{breadType}, new String[] {meatType}, new String[] {cheeseType},
+                regularToppings, sauces, sides, totalPrice);
         sandwich.setToasted(toasted);
         sandwich.setExtraMeat(extraMeat);
         sandwich.setExtraCheese(extraCheese);
@@ -163,6 +196,9 @@ public class UserInterface {
 
         System.out.println("Sandwich order complete.");
     }
+
+
+
 
     private int selectOption(String prompt, String[] options) {
         System.out.println(prompt);
@@ -183,12 +219,34 @@ public class UserInterface {
     }
 
     private void addDrink() {
-        System.out.println("Added Drink");
-    }
+    // Select drink size
+    int command = selectOption("What size drink would you like?", drinkSizes);
+    if (command == -1) return;
+    String size = drinkSizes[command - 1];
+    float price = drinkPrices[command - 1]; // Get the price based on the selected size
 
-    private void addChips() {
-        System.out.println("Added Chips");
-    }
+    // Create drink add-on
+    AddOns drink = new AddOns(price,"Drink");
+    order.addProduct(drink);
+
+    // Add drink price to the total
+    order.addToTotal(price);
+
+    System.out.println("Drink added.");
+}
+
+
+private void addChips() {
+    // Create chips add-on
+    AddOns chips = new AddOns(chipsPrice, "Chips");
+    order.addProduct(chips);
+
+    // Add chips price to the total
+    order.addToTotal(chipsPrice);
+
+    System.out.println("Chips added.");
+}
+
 
     private void checkout() {
         float total = order.calcTotal();
@@ -196,8 +254,10 @@ public class UserInterface {
         OrderFileManager.saveOrder(order);
     }
 
+
     private void cancelOrder() {
+
         System.out.println("Order is cancelled");
+
     }
 }
-

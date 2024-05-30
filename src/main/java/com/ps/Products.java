@@ -30,6 +30,15 @@ abstract public class Products {
 
     public abstract void calcPrice();
 
+    public float getTotalPrice() {
+        float totalPrice = 0.0f;
+        for (int i = 0; i < price; i++) {
+            totalPrice += price;
+        }
+        return totalPrice;
+    }
+
+
     @Override
     public String toString() {
         return "Products{" +
@@ -38,3 +47,12 @@ abstract public class Products {
                 '}';
     }
 }
+
+
+
+
+
+
+
+
+

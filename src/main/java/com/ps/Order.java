@@ -7,6 +7,7 @@ public class Order {
     private String date;
     private String customerName;
     private String serverName;
+    private float total;
 
     private ArrayList<Products> products;
 
@@ -78,6 +79,10 @@ public class Order {
         this.products.add(sandwich);
     }
 
+    public void addToTotal(float price) {
+        total += price;
+    }
+
     public float calcTotal() {
         float total = 0;
         for (Products product : this.products) {
@@ -85,4 +90,6 @@ public class Order {
         }
         return total;
     }
+
+
 }
