@@ -3,27 +3,45 @@ package com.ps;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 
 public class OrderFileManager {
 
     public static void saveOrder(Order order) {
-        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("OrderFileWriter.csv", true))) {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
+        String date = LocalDateTime.now().format(dateTimeFormatter);
 
-            bufferedWriter.write(String.format("%s|%s|%s\n",
-                    order.getDate(),
-                    order.getCustomerName(),
-                    order.getServerName()
-            ));
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("Receipts/" + date + ".csv"))) {
+
+            bufferedWriter.write(String.format("Date: %s, Customer: %s, Server: %s\n", order.getDate(), order.getCustomerName(), order.getServerName()));
+
 
             for (Products product : order.getProducts()) {
-                bufferedWriter.write(String.format("%f|", product.getPrice()));
-            }
-            bufferedWriter.newLine();
+                if (product instanceof Sandwich) {
+                    Sandwich sandwich = (Sandwich) product;
+                    String size = sandwich.getSize();
+                    String breadType = Arrays.toString(sandwich.getBreadType());
+                    String meatType = Arrays.toString(sandwich.getMeatType());
+                    String cheeseType = Arrays.toString(sandwich.getCheeseType());
+                    String regToppings = Arrays.toString(sandwich.getRegularToppings());
+                    String sauces = Arrays.toString(sandwich.getSauces());
+                    String sides = Arrays.toString(sandwich.getSides());
+                    Boolean extraMeat = sandwich.isExtraMeat();
+                    Boolean extraCheese = sandwich.isExtraCheese();
+                    Boolean isToasted = sandwich.isToasted();
+                    Float price = sandwich.getPrice();
 
+                    String sandwichOrder = String.format("SANDWICH: %s|%s|%s|%s|%s|%s|%s|%b|%b|%b|%.2f\n",
+                            size, breadType, meatType, cheeseType, regToppings, sauces, sides, extraMeat, extraCheese, isToasted, price);
+
+                    bufferedWriter.write(sandwichOrder);
+                }
+            }
 
         } catch (IOException e) {
             e.printStackTrace();
-
         }
     }
 }

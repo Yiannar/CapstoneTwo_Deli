@@ -19,7 +19,7 @@ public class Order {
         this.customerName = customerName;
         this.serverName = serverName;
 
-        this.products =  new ArrayList<>();
+        this.products = new ArrayList<>();
     }
 
     public String getDate() {
@@ -54,33 +54,29 @@ public class Order {
         this.products = products;
     }
 
-   public void addProduct(Products products){
+    public void addProduct(Products products) {
         this.products.add(products);
-   }
+    }
 
 
-    public void removeProducts(Products products){
+    public void removeProducts(Products products) {
         this.products.remove(products);
     }
 
-    public void addFourInchSize(float v){
+    public void addFourInchSize(float sizePrice) {
         Products sandwich = new Sandwich(fourInchPrice);
         this.products.add(sandwich);
     }
 
-    public void addEightInchSize(float v){
+    public void addEightInchSize(float sizePrice) {
         Products sandwich = new Sandwich(eightInchPrice);
         this.products.add(sandwich);
     }
 
-    public void addTwelveInchSandwich(float v){
+    public void addTweleveInchPrice(float sizePrice) {
         Products sandwich = new Sandwich(tweleveInchPrice);
         this.products.add(sandwich);
     }
-
-
-
-
 
     public float calcTotal() {
         float total = 0;
@@ -89,23 +85,4 @@ public class Order {
         }
         return total;
     }
-
-
-
-    @Override
-    public String toString() {
-        return "Order{" +
-                "date='" + date + '\'' +
-                ", customerName='" + customerName + '\'' +
-                ", serverName='" + serverName + '\'' +
-                ", products=" + products +
-                '}';
-    }
-
-
-
-
-
-
-
 }

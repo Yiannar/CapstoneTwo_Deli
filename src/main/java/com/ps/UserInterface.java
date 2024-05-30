@@ -2,27 +2,24 @@ package com.ps;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class UserInterface {
 
-    private static  Order order;
+    private static Order order;
     private static Scanner scanner = new Scanner(System.in);
 
-    private static  String[] BREAD_TYPES = {"White", "Wheat", "Rye", "Wrap"};
-    private static  String[] SIZES = {"4'", "8'", "12'"};
-    private static  String[] MEAT_TOPPINGS = {"Steak", "Ham", "Salami", "Roast Beef", "Chicken", "Bacon"};
-    private static  String[] CHEESE_TOPPINGS = {"American", "Provolone", "Cheddar", "Swiss"};
-    private static  String[] REGULAR_TOPPINGS = {"Lettuce", "Peppers", "Onions", "Tomatoes", "Jalapenos", "Cucumbers", "Pickles", "Guacamole", "Mushrooms"};
-    private static  String[] SAUCES = {"Mayo", "Mustard", "Ketchup", "Ranch", "Thousand Islands", "Vinaigrette"};
-    private static  String[] SIDES = {"Au Jus", "Sauce", "No Side"};
+    private static String[] breadTypes = {"White", "Wheat", "Rye", "Wrap"};
+    private static String[] sizes = {"4\"", "8\"", "12\""};
+    private static String[] meatToppings = {"Steak", "Ham", "Salami", "Roast Beef", "Chicken", "Bacon"};
+    private static String[] cheeseToppings = {"American", "Provolone", "Cheddar", "Swiss"};
+    private static String[] regularToppings = {"Lettuce", "Peppers", "Onions", "Tomatoes", "Jalapenos", "Cucumbers", "Pickles", "Guacamole", "Mushrooms"};
+    private static String[] sauces = {"Mayo", "Mustard", "Ketchup", "Ranch", "Thousand Islands", "Vinaigrette"};
+    private static String[] sides = {"Au Jus", "Sauce", "No Side"};
 
-    private static float[] SIZE_PRICE = {5.50f, 7.00f, 8.50f};
+    private static float[] sizePrices = {5.50f, 7.00f, 8.50f};
 
     public void display() {
-        init();
-
         int mainMenuCommand;
 
         do {
@@ -31,51 +28,38 @@ public class UserInterface {
             System.out.println("2) Exit");
 
             System.out.println("Please choose an option: ");
-
             mainMenuCommand = scanner.nextInt();
 
             switch (mainMenuCommand) {
-
                 case 1:
-
-
-                    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd-hhmmss");
+                    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
                     String date = LocalDateTime.now().format(dateTimeFormatter);
 
-                    scanner.nextLine();
-                    System.out.println("What is the customers name?");
-                    scanner.nextLine();
+                    scanner.nextLine();  // Consume newline
+                    System.out.println("What is the customer's name?");
+                    String customerName = scanner.nextLine();
 
                     System.out.println("Server: ");
-                    scanner.nextLine();
+                    String serverName = scanner.nextLine();
 
-                    order = new Order(date, order.getCustomerName(), order.getServerName());
-
+                    init(date, customerName, serverName);
                     handleNewOrder();
-
                     break;
 
                 case 2:
                     System.out.println("Exiting.....");
-
                     break;
 
                 default:
                     System.out.println("Invalid input. Please try again.");
-
                     break;
-
-
             }
 
         } while (mainMenuCommand != 2);
     }
 
-    private void init() {
-        order = new Order("2024-05-24", "Dan", "Kelly");
-
-        OrderFileManager.saveOrder(order);
-
+    private void init(String date, String customerName, String serverName) {
+        order = new Order(date, customerName, serverName);
     }
 
     private void handleNewOrder() {
@@ -88,9 +72,8 @@ public class UserInterface {
             System.out.println("4) Checkout");
             System.out.println("0) Cancel Order");
 
-
             command = scanner.nextInt();
-            scanner.nextLine();
+            scanner.nextLine();  // Consume newline
 
             switch (command) {
                 case 1:
@@ -109,75 +92,76 @@ public class UserInterface {
                     cancelOrder();
                     break;
 
+                default:
+                    System.out.println("Invalid input. Please try again.");
+                    break;
             }
         } while (command != 4 && command != 0);
     }
 
-
     private void addSandwich() {
+        int command;
 
+        // Select size
+        command = selectOption("What size would you like?", sizes);
+        if (command == -1) return;
+        String size = sizes[command - 1];
+        float price = sizePrices[command - 1];
 
-            int command;
+        // Select bread
+        command = selectOption("Select your bread", breadTypes);
+        if (command == -1) return;
+        String breadType = breadTypes[command - 1];
 
-            // Select bread
-            command = selectOption("Select your bread", BREAD_TYPES);
-            if (command == -1) return;
+        // Select meat toppings
+        command = selectOption("What meat toppings would you like to add?", meatToppings);
+        if (command == -1) return;
+        String meatType = meatToppings[command - 1];
 
-            // Select size
+        // Extra meat
+        boolean extraMeat = false;
+        command = selectOption("Would you like extra meat for an additional cost?", new String[]{"Yes", "No"});
+        if (command == 1) extraMeat = true;
 
-        int sizeCommand = selectOption("What size would you like?", SIZES);
-            if ( sizeCommand == -1) return;
+        // Select cheese toppings
+        command = selectOption("What cheese toppings would you like to add?", cheeseToppings);
+        if (command == -1) return;
+        String cheeseType = cheeseToppings[command - 1];
 
-            switch (sizeCommand){
-                case 1:
-                    order.addFourInchSize(SIZE_PRICE[0]);
-                    break;
-                case 2:
-                    order.addEightInchSize(SIZE_PRICE[1]);
-                    break;
-                case 3:
-                    order.addTwelveInchSandwich(SIZE_PRICE[2]);
-                    break;
-                default:
-                    System.out.println("Invalid size selected");
-                    break;
-            }
+        // Extra cheese
+        boolean extraCheese = false;
+        command = selectOption("Would you like extra cheese for an additional cost?", new String[]{"Yes", "No"});
+        if (command == 1) extraCheese = true;
 
-            // Select meat toppings
-            command = selectOption("What meat toppings would you like to add?", MEAT_TOPPINGS);
-            if (command == -1) return;
+        // Regular toppings
+        command = selectOption("We also have regular toppings which are included. Would you like to add anything?", regularToppings);
+        if (command == -1) return;
+        String regularTopping = regularToppings[command - 1];
 
-            // Extra meat
-            command = selectOption("Would you like extra meat for an additional cost?", new String[]{"Yes", "No"});
-            if (command == -1) return;
+        // Select sauce
+        command = selectOption("What sauce would you like on your sandwich?", sauces);
+        if (command == -1) return;
+        String sauce = sauces[command - 1];
 
-            // Select cheese toppings
-            command = selectOption("What cheese toppings would you like to add?", CHEESE_TOPPINGS);
-            if (command == -1) return;
+        // Add side
+        command = selectOption("Would you like to add a side?", sides);
+        if (command == -1) return;
+        String side = sides[command - 1];
 
-            // Extra cheese
-            command = selectOption("Would you like extra cheese for an additional cost?", new String[]{"Yes", "No"});
-            if (command == -1) return;
+        // Toasted bread
+        boolean toasted = false;
+        command = selectOption("Would you like your bread toasted?", new String[]{"Yes", "No"});
+        if (command == 1) toasted = true;
 
-            // Regular toppings
-            command = selectOption("We also have regular toppings which are included. Would you like to add anything?", REGULAR_TOPPINGS);
-            if (command == -1) return;
+        // Create sandwich and add to order
+        Sandwich sandwich = new Sandwich(size, new String[]{breadType}, new String[]{meatType}, new String[]{cheeseType},
+                new String[]{regularTopping}, new String[]{sauce}, new String[]{side}, price);
+        sandwich.setToasted(toasted);
+        sandwich.setExtraMeat(extraMeat);
+        sandwich.setExtraCheese(extraCheese);
+        order.addProduct(sandwich);
 
-            // Select sauce
-            command = selectOption("What sauce would you like on your sandwich?", SAUCES);
-            if (command == -1) return;
-
-            // Add side
-            command = selectOption("Would you like to add a side?", SIDES);
-            if (command == -1) return;
-
-            // Toasted bread
-            command = selectOption("Would you like your bread toasted?", new String[]{"Yes", "No"});
-            if (command == -1) return;
-
-            System.out.println("Sandwich order complete.");
-
-
+        System.out.println("Sandwich order complete.");
     }
 
     private int selectOption(String prompt, String[] options) {
@@ -187,7 +171,7 @@ public class UserInterface {
         }
 
         int command = scanner.nextInt();
-        scanner.nextLine();
+        scanner.nextLine();  // Consume newline
 
         if (command < 1 || command > options.length) {
             System.out.println("Invalid input. Please try again.");
@@ -198,24 +182,22 @@ public class UserInterface {
         return command;
     }
 
-    private void addDrink(){
+    private void addDrink() {
         System.out.println("Added Drink");
     }
 
-    private void addChips(){
-        System.out.println("Add chips");
+    private void addChips() {
+        System.out.println("Added Chips");
     }
 
-    public void checkout(){
+    private void checkout() {
         float total = order.calcTotal();
-
         System.out.println("Total price: $" + total);
-
+        OrderFileManager.saveOrder(order);
     }
 
-    private void cancelOrder(){
-        System.out.println(" Order is cancelled");
+    private void cancelOrder() {
+        System.out.println("Order is cancelled");
     }
-
-
 }
+

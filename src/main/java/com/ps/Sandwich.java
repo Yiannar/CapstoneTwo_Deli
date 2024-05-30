@@ -2,18 +2,22 @@ package com.ps;
 
 import java.util.Arrays;
 
-public class Sandwich extends Products{
+public class Sandwich extends Products {
 
-    private int size;
+    private String size;
     private String[] breadType;
     private String[] meatType;
     private String[] cheeseType;
     private String[] regularToppings;
     private String[] sauces;
     private String[] sides;
+    private boolean extraMeat;
+    private boolean extraCheese;
+    private boolean toasted;
 
     // Constructor with all parameters
-    public Sandwich(int size, String[] breadType, String[] meatType, String[] cheeseType, String[] regularToppings, String[] sauces, String[] sides) {
+    public Sandwich(String size, String[] breadType, String[] meatType, String[] cheeseType, String[] regularToppings, String[] sauces, String[] sides, float price) {
+        super(price, "Sandwich");
         this.size = size;
         this.breadType = breadType;
         this.meatType = meatType;
@@ -23,8 +27,10 @@ public class Sandwich extends Products{
         this.sides = sides;
     }
 
+    // Default constructor
     public Sandwich() {
-        this.size = 0;
+        super(0, "Sandwich");
+        this.size = "0";
         this.breadType = new String[]{"white", "wheat", "rye", "wrap"};
         this.meatType = new String[]{"steak", "ham", "salami", "roast beef", "chicken", "bacon"};
         this.cheeseType = new String[]{"american", "provolone", "cheddar", "swiss"};
@@ -33,13 +39,19 @@ public class Sandwich extends Products{
         this.sides = new String[]{"au jus", "sauce"};
     }
 
+    public Sandwich(float fourInchPrice) {
+        super(fourInchPrice, "sandwich");
+    }
 
+    public Sandwich(String[] size, String[] breadType, String[] meatType, String[] cheeseType, String[] regularToppings, String[] sauces, String[] sides) {
+        super(0, "Sandwich");
+    }
 
-    public int getSize() {
+    public String getSize() {
         return size;
     }
 
-    public void setSize(int size) {
+    public void setSize(String size) {
         this.size = size;
     }
 
@@ -91,14 +103,33 @@ public class Sandwich extends Products{
         this.sides = sides;
     }
 
+    public boolean isExtraMeat() {
+        return extraMeat;
+    }
 
-    public Sandwich(float price) {
-        this.setPrice(price);
+    public void setExtraMeat(boolean extraMeat) {
+        this.extraMeat = extraMeat;
+    }
+
+    public boolean isExtraCheese() {
+        return extraCheese;
+    }
+
+    public void setExtraCheese(boolean extraCheese) {
+        this.extraCheese = extraCheese;
+    }
+
+    public boolean isToasted() {
+        return toasted;
+    }
+
+    public void setToasted(boolean toasted) {
+        this.toasted = toasted;
     }
 
     @Override
     public void calcPrice() {
-
+        // Add logic here to calculate the price of the sandwich
     }
 
     @Override
@@ -111,6 +142,9 @@ public class Sandwich extends Products{
                 ", regularToppings=" + Arrays.toString(regularToppings) +
                 ", sauces=" + Arrays.toString(sauces) +
                 ", sides=" + Arrays.toString(sides) +
+                ", extraMeat=" + extraMeat +
+                ", extraCheese=" + extraCheese +
+                ", toasted=" + toasted +
                 '}';
     }
 }
