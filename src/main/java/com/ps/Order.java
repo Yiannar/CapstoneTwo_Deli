@@ -60,8 +60,14 @@ public class Order {
     }
 
 
-    public void removeProducts(Products products) {
-        this.products.remove(products);
+    public void removeProduct(Products product) {
+        // Check if the product exists in the order
+        if (this.products.contains(product)) {
+            this.products.remove(product); // Remove the product from the order
+            System.out.println("Product removed from the order.");
+        } else {
+            System.out.println("Product not found in the order.");
+        }
     }
 
     public void addFourInchSize(float sizePrice) {
@@ -91,5 +97,14 @@ public class Order {
         return total;
     }
 
-
+    @Override
+    public String toString() {
+        return "Order{" +
+                "date='" + date + '\'' +
+                ", customerName='" + customerName + '\'' +
+                ", serverName='" + serverName + '\'' +
+                ", total=" + total +
+                ", products=" + products +
+                '}';
+    }
 }

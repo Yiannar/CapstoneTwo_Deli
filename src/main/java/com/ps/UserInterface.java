@@ -2,6 +2,7 @@ package com.ps;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class UserInterface {
@@ -89,12 +90,15 @@ private static float chipsPrice = 1.50f;
                     addSandwich();
                     break;
                 case 2:
-                    addDrink();
+                    orderSignatureSandwich();
                     break;
                 case 3:
-                    addChips();
+                    addDrink();
                     break;
                 case 4:
+                    addChips();
+                    break;
+                case 5:
                     checkout();
                     break;
                 case 0:
@@ -171,6 +175,11 @@ private static float chipsPrice = 1.50f;
         // Update the total price with the cheese price
         totalPrice += cheesePrice;
 
+        // Select regular topping
+        command = selectOption("We also have regular toppings which are included. Would you like to add anything?", regularToppings);
+        if (command == -1) return;
+        String regularTopping = regularToppings[command - 1];
+
         // Select sauce
         command = selectOption("What sauce would you like on your sandwich?", sauces);
         if (command == -1) return;
@@ -187,7 +196,7 @@ private static float chipsPrice = 1.50f;
         if (command == 1) toasted = true;
 
         // Create sandwich and add to order
-        Sandwich sandwich = new Sandwich(sizes[sizeIndex - 1], new String[]{breadType}, new String[] {meatType}, new String[] {cheeseType},
+        Sandwich sandwich = new Sandwich(sizes[sizeIndex - 1], breadTypes, meatType, cheeseType,
                 regularToppings, sauces, sides, totalPrice);
         sandwich.setToasted(toasted);
         sandwich.setExtraMeat(extraMeat);
@@ -196,6 +205,66 @@ private static float chipsPrice = 1.50f;
 
         System.out.println("Sandwich order complete.");
     }
+
+
+    private void orderSignatureSandwich() {
+        SignatureSandwich[] signatureSandwiches = {
+                new BLTSandwich(),
+                new PhillyCheeseSteakSandwich()
+        };
+
+        String[] signatureNames = {"BLT", "Philly Cheese Steak"};
+        int command = selectOption("Which signature sandwich would you like to order?", signatureNames);
+        if (command == -1) return;
+
+        SignatureSandwich selectedSandwich = signatureSandwiches[command - 1];
+        printSandwichDetails(selectedSandwich);
+
+        // If the user wants to customize, you could provide additional options to add/remove toppings here
+
+        // Convert to a Sandwich object to add to the order
+        Sandwich sandwich = new Sandwich(
+                selectedSandwich.getSize(),
+                selectedSandwich.getBread(),
+                selectedSandwich.getMeat(),
+                selectedSandwich.getCheese(),
+                selectedSandwich.getToppings(),
+                selectedSandwich.getSauces(),
+                new String[]{}, // Sides can be added separately
+                calculateTotalPrice(selectedSandwich)
+        );
+        sandwich.setToasted(selectedSandwich.isToasted());
+        order.addProduct(sandwich);
+
+        System.out.println("Signature sandwich order complete.");
+    }
+
+    private float calculateTotalPrice(SignatureSandwich sandwich) {
+        int sizeIndex = Arrays.asList(sizes).indexOf(sandwich.getSize());
+        float totalPrice = sizePrices[sizeIndex];
+
+        for (String meat : sandwich.getMeat()) {
+            totalPrice += meatPrices[sizeIndex];
+        }
+
+        for (String cheese : sandwich.getCheese()) {
+            totalPrice += cheesePrices[sizeIndex];
+        }
+
+        return totalPrice;
+    }
+
+    private static void printSandwichDetails(SignatureSandwich sandwich) {
+        System.out.println("Size: " + sandwich.getSize());
+        System.out.println("Bread: " + Arrays.toString(sandwich.getBread()));
+        System.out.println("Meat: " + Arrays.toString(sandwich.getMeat()));
+        System.out.println("Cheese: " + Arrays.toString(sandwich.getCheese()));
+        System.out.println("Toppings: " + Arrays.toString(sandwich.getToppings()));
+        System.out.println("Sauces: " + Arrays.toString(sandwich.getSauces()));
+        System.out.println("Toasted: " + sandwich.isToasted());
+        System.out.println();
+    }
+
 
 
 
@@ -217,6 +286,8 @@ private static float chipsPrice = 1.50f;
         System.out.println("You selected: " + options[command - 1]);
         return command;
     }
+
+
 
     private void addDrink() {
     // Select drink size
@@ -249,15 +320,51 @@ private void addChips() {
 
 
     private void checkout() {
+        // Display the order details and price
         float total = order.calcTotal();
+        System.out.println("Order Details:");
+        System.out.println(order.toString());
         System.out.println("Total price: $" + total);
+
+
+        int command;
+        do {
+            System.out.println("1) Confirm");
+            System.out.println("2) Cancel");
+            System.out.println("Please choose an option:");
+
+            command = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (command) {
+                case 1:
+                    confirmOrder();
+                    return;
+                case 2:
+                    cancelOrder();
+                    return;
+                default:
+                    System.out.println("Invalid input. Please try again.");
+                    break;
+            }
+        } while (true);
+    }
+
+    private void confirmOrder() {
+        // Create the receipt file (you can implement this)
         OrderFileManager.saveOrder(order);
+        System.out.println("Order confirmed. Receipt created.");
+        // Reset the order for a new order
+        order = null;
     }
 
 
     private void cancelOrder() {
-
-        System.out.println("Order is cancelled");
-
+        // Iterate over all products in the order and remove each one
+        for (Products product : order.getProducts()) {
+            order.removeProduct(product);
+        }
+        System.out.println("Order canceled. All products removed.");
     }
+
 }

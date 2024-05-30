@@ -52,6 +52,9 @@ public class Sandwich extends Products {
         super(0, "Sandwich");
     }
 
+//    public Sandwich(String size, String[] breadTypes, String meatType, String cheeseType, String[] regularToppings, String[] sauces, String[] sides, float totalPrice) {
+//        super(0f,"name");
+//    }
 
     public String getSize() {
         return size;
