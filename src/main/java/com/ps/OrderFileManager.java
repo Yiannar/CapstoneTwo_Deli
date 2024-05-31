@@ -15,12 +15,10 @@ public class OrderFileManager {
 
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("Receipts/" + date + ".csv"))) {
 
-            bufferedWriter.write(String.format("Date: %s, Customer: %s, Server: %s\n", order.getDate(), order.getCustomerName(), order.getServerName()));
-
+            bufferedWriter.write(String.format("Date: %s\n Customer: %s\n Server: %s\n", order.getDate(), order.getCustomerName(), order.getServerName()));
 
             for (Products product : order.getProducts()) {
-                if (product instanceof Sandwich) {
-                    Sandwich sandwich = (Sandwich) product;
+                if (product instanceof Sandwich sandwich) {
                     String size = sandwich.getSize();
                     String breadType = Arrays.toString(sandwich.getBreadType());
                     String meatType = Arrays.toString(sandwich.getMeatType());
@@ -33,7 +31,7 @@ public class OrderFileManager {
                     Boolean isToasted = sandwich.isToasted();
                     Float price = sandwich.getPrice();
 
-                    String sandwichOrder = String.format("SANDWICH: %s|%s|%s|%s|%s|%s|%s|%b|%b|%b|%.2f\n",
+                    String sandwichOrder = String.format("*******************SANDWICH*******************\n Size: %s\n Bread: %s\n Meat: %s\n Cheese: %s\n Toppings: %s\n Sauce: %s\n Sides: %s\n Extra Meat: %b\n Extra Cheese: %b\n Toasted: %b\n *******************Price: %.2f*******************\n",
                             size, breadType, meatType, cheeseType, regToppings, sauces, sides, extraMeat, extraCheese, isToasted, price);
 
                     bufferedWriter.write(sandwichOrder);

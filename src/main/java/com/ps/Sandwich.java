@@ -143,18 +143,20 @@ public class Sandwich extends Products {
     @Override
     public String toString() {
         StringBuilder format = new StringBuilder();
-        format.append("Size: ").append(size).append("\n");
-        format.append("Bread type: ").append(Arrays.toString(breadType)).append("\n");
-        format.append("Meat type: ").append(Arrays.toString(meatType)).append("\n");
-        format.append("Cheese type: ").append(Arrays.toString(cheeseType)).append("\n");
-        format.append("Regular toppings: ").append(Arrays.toString(regularToppings)).append("\n");
-        format.append("Sauces: ").append(Arrays.toString(sauces)).append("\n");
-        format.append("Sides: ").append(Arrays.toString(sides)).append("\n");
-        format.append("Extra meat: ").append(extraMeat).append("\n");
-        format.append("Extra cheese: ").append(extraCheese).append("\n");
-        format.append("Toasted: ").append(toasted).append("\n");
-        format.append("Price: ").append(price).append("\n");
+        format.append("SANDWICH: Size: ").append(size).append("\n");
+        format.append(" Bread type: ").append(String.join(", ", breadType)).append("\n");
+        format.append(" Meat type: ").append(String.join(", ", meatType)).append("\n");
+        format.append(" Cheese type: ").append(String.join(", ", cheeseType)).append("\n");
+        format.append(" Regular toppings: ").append(String.join(", ", regularToppings)).append("\n");
+        format.append(" Sauces: ").append(String.join(", ", sauces)).append("\n");
+        format.append(" Sides: ").append(String.join(", ", sides)).append("\n");
+        format.append(" Extra meat: ").append(extraMeat).append("\n");
+        format.append(" Extra cheese: ").append(extraCheese).append("\n");
+        format.append(" Toasted: ").append(toasted).append("\n");
+        format.append(" Price: $").append(price).append("\n");
         return format.toString();
     }
+
+
 
 }

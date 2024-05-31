@@ -55,19 +55,17 @@ public class Order {
         this.products = products;
     }
 
-    public void addProduct(Products products) {
-        this.products.add(products);
+    public void addProduct(Products product) {
+        products.add(product);
+        total += product.getPrice();
+
     }
 
 
     public void removeProduct(Products product) {
         // Check if the product exists in the order
-        if (this.products.contains(product)) {
-            this.products.remove(product); // Remove the product from the order
-            System.out.println("Product removed from the order.");
-        } else {
-            System.out.println("Product not found in the order.");
-        }
+        products.remove(product);
+        total -= product.getPrice();
     }
 
     public void addFourInchSize(float sizePrice) {
@@ -99,12 +97,29 @@ public class Order {
 
     @Override
     public String toString() {
-        return "Order{" +
-                "date='" + date + '\'' +
-                ", customerName='" + customerName + '\'' +
-                ", serverName='" + serverName + '\'' +
-                ", total=" + total +
-                ", products=" + products +
-                '}';
+        StringBuilder receipt = new StringBuilder();
+        receipt.append("Date: ").append(date).append("\n")
+                .append("Customer: ").append(customerName).append("\n")
+                .append("Server: ").append(serverName).append("\n")
+                .append("-------------------------------\n")
+                .append("Products:\n");
+
+        for (Products product : products) {
+            receipt.append(product.toString()).append("\n");
+        }
+
+        float subtotal = calcTotal();
+        float tax = subtotal * 0.08f;
+        float totalPrice = subtotal + tax;
+
+        receipt.append("-------------------------------\n")
+                .append("Subtotal: $").append(String.format("%.2f", subtotal)).append("\n")
+                .append("Tax: $").append(String.format("%.2f", tax)).append("\n")
+                .append("Total: $").append(String.format("%.2f", totalPrice)).append("\n");
+
+        return receipt.toString();
     }
+
+
+
 }

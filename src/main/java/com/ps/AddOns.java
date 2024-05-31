@@ -33,9 +33,8 @@ public class AddOns extends Products {
 
     @Override
     public String toString() {
-        return "AddOns{" +
-                "price=" + price +
-                ", type='" + type + '\'' +
-                '}';
+        return "AddOns{price=" + price +
+                ", type='" + type + "'}";
     }
+
 }

@@ -1,0 +1,15 @@
+Date: 2024-05-30_19-38-44
+ Customer: John
+ Server: Doe
+*******************SANDWICH*******************
+ Size: 8"
+ Bread: [Wheat]
+ Meat: [Ham]
+ Cheese: [Provolone]
+ Toppings: [Peppers]
+ Sauce: [Mustard]
+ Sides: [Sauce]
+ Extra Meat: false
+ Extra Cheese: false
+ Toasted: false
+ *******************Price: 10.50*******************
