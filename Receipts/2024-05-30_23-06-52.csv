@@ -1,0 +1,15 @@
+Date: 2024-05-30_23-06-33
+ Customer: Jane
+ Server: Mary
+*******************SANDWICH*******************
+ Size: 8"
+ Bread: [White]
+ Meat: [Bacon]
+ Cheese: [Cheddar]
+ Toppings: [Lettuce, Tomato]
+ Sauce: [Ranch]
+ Sides: []
+ Extra Meat: false
+ Extra Cheese: false
+ Toasted: true
+ *******************Price: 10.50*******************

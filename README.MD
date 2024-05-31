@@ -119,6 +119,7 @@ The receipt makes a new file an order is made and is stored by the date and time
 
 - Add more sandwich options
 - Include vegetarian and vegan options
+- Add Junit testing 
 
 
 </details>
